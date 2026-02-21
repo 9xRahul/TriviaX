@@ -62,7 +62,6 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
             const Divider(),
             const SizedBox(height: 20),
 
-            /// Created Questions Title (no style change)
             const Text(
               "Created Questions",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
