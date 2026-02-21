@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triviax/models/questions.dart';
 import 'package:triviax/services/api_service.dart';
 
-
 class QuizState {
   final List<Question> questions;
   final int index;
@@ -44,49 +43,95 @@ class QuizController extends StateNotifier<QuizState> {
 
   final TriviaService _service = TriviaService();
 
+  String? lastDifficulty;
+
   Future<void> startQuiz(String difficulty) async {
-    state = state.copyWith(isLoading: true);
+    lastDifficulty = difficulty; // ✅ remember difficulty
+
+    state = QuizState(isLoading: true);
 
     final questions = await _service.fetchQuestions(difficulty);
 
-    state = QuizState(questions: questions);
+    state = QuizState(
+      questions: questions,
+      index: 0,
+      score: 0,
+      lives: 3,
+      isLoading: false,
+      isFinished: false,
+    );
   }
 
   void answer(String selected) {
     final current = state.questions[state.index];
 
+    int newScore = state.score;
+    int newLives = state.lives;
+
     if (current.correctAnswers.contains(selected)) {
-      state = state.copyWith(score: state.score + 10);
+      newScore += 10;
     } else {
-      final newLives = state.lives - 1;
-      if (newLives == 0) {
-        state = state.copyWith(lives: 0, isFinished: true);
-        return;
-      }
-      state = state.copyWith(lives: newLives);
+      newLives -= 1;
     }
 
-    next();
+    if (newLives <= 0 || state.index + 1 >= state.questions.length) {
+      state = state.copyWith(
+        score: newScore,
+        lives: newLives,
+        isFinished: true,
+      );
+    } else {
+      state = state.copyWith(
+        score: newScore,
+        lives: newLives,
+        index: state.index + 1,
+      );
+    }
   }
 
   void skip() {
-    state = state.copyWith(score: state.score - 5);
-    next();
-  }
+    int newScore = state.score - 5;
 
-  void next() {
     if (state.index + 1 >= state.questions.length) {
-      state = state.copyWith(isFinished: true);
+      state = state.copyWith(score: newScore, isFinished: true);
     } else {
-      state = state.copyWith(index: state.index + 1);
+      state = state.copyWith(score: newScore, index: state.index + 1);
     }
   }
 
   void reset() {
     state = QuizState();
   }
+
+  void startCustomQuiz(List<Question> customQuestions) {
+    state = QuizState(
+      questions: customQuestions,
+      index: 0,
+      score: 0,
+      lives: 3,
+      isLoading: false,
+      isFinished: false,
+    );
+  }
+
+  Future<void> reloadIfEmpty() async {
+    if (state.questions.isEmpty && lastDifficulty != null) {
+      state = state.copyWith(isLoading: true);
+
+      final questions = await _service.fetchQuestions(lastDifficulty!);
+
+      state = state.copyWith(
+        questions: questions,
+        index: 0,
+        score: 0,
+        lives: 3,
+        isLoading: false,
+        isFinished: false,
+      );
+    }
+  }
 }
 
-final quizProvider = StateNotifierProvider<QuizController, QuizState>((ref) {
-  return QuizController();
-});
+final quizProvider = StateNotifierProvider<QuizController, QuizState>(
+  (ref) => QuizController(),
+);
