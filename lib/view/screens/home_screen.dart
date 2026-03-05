@@ -12,7 +12,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeController = Get.find<ThemeController>();
+    //final themeController = Get.find<ThemeController>();
+    var state = ref.watch(quizProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
 
                   if (customQuestions.isEmpty) {
                     Get.snackbar(
-                      "No Questions",
+                      "No Questions Found",
                       "Please create questions in Admin Mode first",
                       backgroundColor: Colors.red,
                       colorText: Colors.white,

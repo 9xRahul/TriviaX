@@ -11,6 +11,7 @@ class TriviaService {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
+      print("questions loaded");
       final data = jsonDecode(response.body);
       return (data['results'] as List).map((q) => Question.fromApi(q)).toList();
     } else {

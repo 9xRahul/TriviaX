@@ -69,11 +69,8 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
 
             const SizedBox(height: 10),
 
-            ...questions.asMap().entries.map((entry) {
-              final index = entry.key;
-              final q = entry.value;
-              return _questionCard(q, index);
-            }),
+            for (int i = 0; i < questions.length; i++)
+              _questionCard(questions[i], i),
           ],
         ),
       ),

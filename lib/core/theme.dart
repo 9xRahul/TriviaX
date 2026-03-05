@@ -8,7 +8,7 @@ class AppTheme {
         fontFamily: "Poppins",
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        inherit: true, // explicitly same
+        inherit: true,
       ),
     ),
   );
@@ -20,7 +20,7 @@ class AppTheme {
         fontFamily: "Poppins",
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        inherit: true, // MUST MATCH
+        inherit: true,
       ),
     ),
   );

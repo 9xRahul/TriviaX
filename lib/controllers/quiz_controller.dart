@@ -46,7 +46,7 @@ class QuizController extends StateNotifier<QuizState> {
   String? lastDifficulty;
 
   Future<void> startQuiz(String difficulty) async {
-    lastDifficulty = difficulty; // ✅ remember difficulty
+    lastDifficulty = difficulty; 
 
     state = QuizState(isLoading: true);
 

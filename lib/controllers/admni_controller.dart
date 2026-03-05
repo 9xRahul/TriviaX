@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triviax/models/questions.dart';
 
-
 class AdminController extends StateNotifier<List<Question>> {
   AdminController() : super([]);
 
