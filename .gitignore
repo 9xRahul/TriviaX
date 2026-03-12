@@ -47,9 +47,7 @@ ios/Flutter/App.framework
 ios/Flutter/Flutter.framework
 ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
-ios/Runner.xcworkspace
-ios/Runner/GeneratedPluginRegistrant.*
-ios/Runner/*.xcconfig
+
 
 macos/Pods/
 macos/Flutter/ephemeral/
